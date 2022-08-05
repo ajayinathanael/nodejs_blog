@@ -14,7 +14,14 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const posts = [];
 
-mongoose.connect("mongodb://localhost:27017/blogDB");
+// mongoose.connect("mongodb://localhost:27017/blogDB");
+//mongodb+srv://admin:<PASSWORD>@cluster0.7o8eg7x.mongodb.net/natours?retryWrites=true
+
+//connect to mongoose
+const DB="mongodb+srv://admin:nath@cluster0.7o8eg7x.mongodb.net/blogDatabase?retryWrites=true";
+
+mongoose.connect(DB)
+.then(() => console.log('DB connection successful'));
 
 //compose Schema
 const composeSchema = {
@@ -36,7 +43,7 @@ app.set('view engine', 'ejs');
 
 //home.ejs route. ejs then js
 app.get("/", (req,res) => {
-
+ 
   Post.find({}, function(err, founditems){
     res.render("home", {homefirstcontent: homeStartingContent, posts:founditems});
 })
@@ -90,12 +97,8 @@ app.get("/posts/:postId/", (req,res) => {
 
 })
 
-let port = process.env.PORT;
-if(port == null || port==""){
-  port =3000;
-}
-
-app.listen(port, function(){
-  console.log("Server has strated successfully");
-
+//use config port || 3000
+const port=process.env.PORT || 4000;
+const server = app.listen(port, ()=>{
+    console.log(`App started on port ${port}`);
 });
